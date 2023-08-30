@@ -2,10 +2,18 @@ import Product from "@models/product";
 import { connectDB } from "@utils/database";
 
 export async function GET(req) {
+  const id = req.nextUrl.searchParams.get("id");
+
   try {
     await connectDB();
-    const products = await Product.find({});
 
+    if (id) {
+      const product = await Product.findOne({ _id: id });
+      console.log(product);
+      return new Response(JSON.stringify(product), { status: 201 });
+    }
+
+    const products = await Product.find({});
     return new Response(JSON.stringify(products), { status: 201 });
   } catch (error) {
     return new Response("Failed to get products", {

@@ -13,6 +13,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const app = initializeApp(firebaseConfig);
@@ -26,6 +27,7 @@ function AddNewProduct() {
     imageUrl: "",
     description: "",
   });
+  const router = useRouter();
 
   const createFileName = (file) => {
     const timeStamp = Date.now();
@@ -78,7 +80,10 @@ function AddNewProduct() {
   async function createProduct(e) {
     e.preventDefault();
     const res = await axios.post("/api/products", formData);
-    console.log(res);
+
+    if (res) {
+      router.push("/products");
+    }
   }
 
   console.log(formData);

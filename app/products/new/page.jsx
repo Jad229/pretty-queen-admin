@@ -1,18 +1,71 @@
 "use client";
 import InputComponent from "@components/FormElements/InputComponent";
-import { addProductFormControls } from "@utils";
+import {
+  addProductFormControls,
+  firebaseConfig,
+  firebaseStorageURL,
+} from "@utils";
 import axios from "axios";
+import { initializeApp } from "firebase/app";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { useState } from "react";
+
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app, firebaseStorageURL);
 
 function AddNewProduct() {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
     type: "",
-    imageUrl: "link",
+    imageUrl: "",
     description: "",
   });
 
+  const createFileName = (file) => {
+    const timeStamp = Date.now();
+    const randomString = Math.random().toString(36).substring(2, 12);
+
+    return `${file.name}-${timeStamp}-${randomString}`;
+  };
+
+  async function firebaseImageUpload(file) {
+    const fileName = createFileName(file);
+    const storageReference = ref(storage, `productImages/${fileName}`);
+    const uploadImage = uploadBytesResumable(storageReference, file);
+
+    return new Promise((resolve, reject) => {
+      uploadImage.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadImage.snapshot.ref)
+            .then((downloadUrl) => resolve(downloadUrl))
+            .catch((error) => reject(error));
+        }
+      );
+    });
+  }
+
+  async function handleImage(e) {
+    const extractedImageUrl = await firebaseImageUpload(e.target.files[0]);
+
+    if (extractedImageUrl !== "") {
+      setFormData({
+        ...formData,
+        imageUrl: extractedImageUrl,
+      });
+    }
+  }
   function onChange(e) {
     e.preventDefault();
 
@@ -20,10 +73,6 @@ function AddNewProduct() {
       ...prevFormData,
       [e.target.name]: e.target.value,
     }));
-  }
-
-  function handleImage() {
-    return null;
   }
 
   async function createProduct(e) {

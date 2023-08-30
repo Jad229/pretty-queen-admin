@@ -1,9 +1,14 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 function Nav() {
   const inactiveLink = "flex gap-1 p-1";
   const activeLink = inactiveLink + " bg-white text-blue-900 rounded-l-lg";
+  const pathname = usePathname();
+
+  console.log(pathname);
   return (
     <aside className="p-4 pr-0">
       <Link href="/" className="flex gap-1 mb-4 mr-4">
@@ -24,7 +29,7 @@ function Nav() {
         <span className="">Pretty Queen Admin</span>
       </Link>
       <nav className="flex flex-col gap-2">
-        <Link href="/" className={activeLink}>
+        <Link href="/" className={pathname === "/" ? activeLink : inactiveLink}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -41,7 +46,10 @@ function Nav() {
           </svg>
           Dashboard
         </Link>
-        <Link href="/orders" className={inactiveLink}>
+        <Link
+          href="/orders"
+          className={pathname === "/orders" ? activeLink : inactiveLink}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -58,7 +66,10 @@ function Nav() {
           </svg>
           Orders
         </Link>
-        <Link href="/products" className={inactiveLink}>
+        <Link
+          href="/products"
+          className={pathname === "/products" ? activeLink : inactiveLink}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -75,7 +86,10 @@ function Nav() {
           </svg>
           Products
         </Link>
-        <Link href="/services" className={inactiveLink}>
+        <Link
+          href="/services"
+          className={pathname === "/services" ? activeLink : inactiveLink}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -92,7 +106,10 @@ function Nav() {
           </svg>
           Services
         </Link>
-        <Link href="/settings" className={inactiveLink}>
+        <Link
+          href="/settings"
+          className={pathname === "/settings" ? activeLink : inactiveLink}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

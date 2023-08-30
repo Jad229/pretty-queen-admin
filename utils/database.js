@@ -8,7 +8,7 @@ export const connectDB = async () => {
     return;
   }
   try {
-    const connection = await mongoose.connect(process.env.MONGO_URI, {
+    const connection = await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "pretty_queen",
     });
     isConnected = true;

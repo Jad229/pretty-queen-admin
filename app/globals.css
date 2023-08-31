@@ -12,8 +12,19 @@ textarea:focus {
   @apply border-blue-900;
 }
 
+button {
+  @apply px-4 py-1 rounded-md;
+}
 .btn_primary {
-  @apply bg-gray-800 text-white px-4 py-1 rounded-md;
+  @apply bg-gray-800 text-white;
+}
+
+.btn_red {
+  @apply bg-red-600 text-white;
+}
+
+.btn_default {
+  @apply border border-gray-500;
 }
 
 .products_table {

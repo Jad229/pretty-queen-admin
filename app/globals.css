@@ -3,12 +3,14 @@
 @tailwind utilities;
 
 input,
-textarea {
+textarea,
+select {
   @apply border-2 border-gray-400 rounded-md px-2 mb-2;
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   @apply border-blue-900;
 }
 
@@ -27,17 +29,17 @@ button {
   @apply border border-gray-500;
 }
 
-.products_table {
+.table {
   @apply w-full;
 }
 
-.products_table thead tr td {
+.table thead tr td {
   @apply bg-blue-100;
 }
-.products_table tr td {
+.table tr td {
   @apply border border-gray-300 p-1;
 }
 
-.products_table a {
+.table a {
   @apply p-2 rounded-md text-sm inline-flex gap-1 items-center;
 }

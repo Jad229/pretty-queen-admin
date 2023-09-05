@@ -25,7 +25,7 @@ function Products() {
         Add new product
       </Link>
 
-      <table className="products_table mt-2">
+      <table className="table mt-2">
         <thead>
           <tr>
             <td>Product Name</td>

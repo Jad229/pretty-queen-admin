@@ -1,4 +1,5 @@
 "use client";
+import Modal from "@components/Modal";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -7,7 +8,7 @@ function Categories() {
   const [categoryName, setCategoryName] = useState("");
   const [parentCategory, setParentCategory] = useState("");
   const [categories, setCategories] = useState([]);
-
+  const [openModal, setOpenModal] = useState(false);
   async function saveCategory(e) {
     e.preventDefault();
 
@@ -104,13 +105,19 @@ function Categories() {
                     >
                       Edit
                     </button>
-                    <button className="bg-red-600">Delete</button>
+                    <button
+                      onClick={() => setOpenModal(true)}
+                      className="btn_red"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
+      <Modal open={openModal} onClose={() => setOpenModal(false)} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-function Modal({ open, onClose }) {
+function Modal({ open, onClose, onConfirm }) {
   if (!open) return null;
 
   return (
@@ -10,11 +10,11 @@ function Modal({ open, onClose }) {
           Are you sure you want to delete this item?
         </h1>
         <div className="flex gap-5">
-          <button className="btn_default" onClick={onClose}>
-            Yes
-          </button>
-          <button className="btn_red" onClick={onClose}>
+          <button className="btn_default font-semibold" onClick={onClose}>
             Cancel
+          </button>
+          <button className="btn_red font-bold" onClick={onConfirm}>
+            Yes, Delete.
           </button>
         </div>
       </div>

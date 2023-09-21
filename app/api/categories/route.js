@@ -1,5 +1,6 @@
 import { Category } from "@models/category";
 import { connectDB } from "@utils/database";
+import { connect } from "mongoose";
 
 export async function GET(req) {
   await connectDB();
@@ -20,10 +21,17 @@ export async function POST(req) {
   const { categoryName, parentCategory } = body;
 
   try {
-    const newCategory = await Category.create({
-      name: categoryName,
-      parent: parentCategory,
-    });
+    let newCategory;
+    if (parentCategory) {
+      newCategory = await Category.create({
+        name: categoryName,
+        parent: parentCategory,
+      });
+    } else {
+      newCategory = await Category.create({
+        name: categoryName,
+      });
+    }
 
     return new Response(JSON.stringify(newCategory), { status: 201 });
   } catch (error) {
@@ -50,6 +58,20 @@ export async function PUT(req) {
     return new Response(JSON.stringify(updatedCategory), { status: 201 });
   } catch (error) {
     return new Response("Failed to update a new category", {
+      status: 500,
+    });
+  }
+}
+
+export async function DELETE(req) {
+  await connectDB();
+  const id = req.nextUrl.searchParams.get("id");
+  try {
+    const deletedCategory = await Category.deleteOne({ _id: id });
+
+    return new Response(JSON.stringify(deletedCategory), { status: 201 });
+  } catch (error) {
+    return new Response("Failed to delete category", {
       status: 500,
     });
   }

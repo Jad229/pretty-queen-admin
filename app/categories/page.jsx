@@ -8,7 +8,9 @@ function Categories() {
   const [categoryName, setCategoryName] = useState("");
   const [parentCategory, setParentCategory] = useState("");
   const [categories, setCategories] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
+
   async function saveCategory(e) {
     e.preventDefault();
 
@@ -38,6 +40,18 @@ function Categories() {
     setParentCategory(category.parent?._id);
   }
 
+  function showModal(category) {
+    setIsOpenModal(true);
+    setCategoryToDelete(category);
+  }
+
+  async function deleteCategory(category) {
+    const { _id } = category;
+    const res = await axios.delete("/api/categories?id=" + _id);
+
+    setIsOpenModal(false);
+    getCategories();
+  }
   const getCategories = async () => {
     const res = await axios.get("/api/categories");
     setCategories(res.data);
@@ -72,7 +86,7 @@ function Categories() {
           value={parentCategory}
           onChange={(e) => setParentCategory(e.target.value)}
         >
-          <option value="">No Parent Category</option>
+          <option value="62">No Parent Category</option>
           {categories.length > 0 &&
             categories.map((category) => (
               <option key={category._id} value={category._id}>
@@ -106,7 +120,7 @@ function Categories() {
                       Edit
                     </button>
                     <button
-                      onClick={() => setOpenModal(true)}
+                      onClick={() => showModal(category)}
                       className="btn_red"
                     >
                       Delete
@@ -117,7 +131,11 @@ function Categories() {
             ))}
         </tbody>
       </table>
-      <Modal open={openModal} onClose={() => setOpenModal(false)} />
+      <Modal
+        open={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+        onConfirm={() => deleteCategory(categoryToDelete)}
+      />
     </div>
   );
 }
